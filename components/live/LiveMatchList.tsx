@@ -15,6 +15,9 @@ export default function LiveMatchList() {
     togglePause,
   } = useLiveScores();
 
+  if(!matches){
+    return <h1 className="text-center py-12">No Matches Found...</h1>
+    }
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between">
@@ -30,11 +33,6 @@ export default function LiveMatchList() {
       </div>
 
       <div className="space-y-4">
-        {matches.length === 0 && (
-          <p className="text-sm text-gray-500">
-            No live matches right now.
-          </p>
-        )}
 
         {matches.map((match) => (
           <MatchCard
