@@ -76,10 +76,9 @@ export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
       <header className="pt-8 pb-6 px-4">
         <div className="container mx-auto">
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-4xl">⚽</span>
-            <h1 className="text-3xl font-bold text-foreground">Football Matches</h1>
+            <h1 className="text-3xl font-bold text-foreground">Today's Matches</h1>
           </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
+          <div className="flex items-center text-muted-foreground">
             <span className="text-sm">{displayToday}</span>
           </div>
         </div>
