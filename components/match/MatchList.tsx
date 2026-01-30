@@ -3,6 +3,8 @@
 import MatchCard from "./MatchCard";
 import { Match } from "@/lib/types";
 import Image from "next/image";
+import EmptyState from "../ui/EmptyState";
+import Suspense from "react";
 
 type MatchListProps = {
   matches: Match[];
@@ -15,11 +17,7 @@ export default function MatchList({
 }: MatchListProps) {
   if (matches.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-lg text-muted-foreground">
-          No matches found
-        </p>
-      </div>
+      <EmptyState title="No matches found" message="There are no matches to display right now." />
     );
   }
 
