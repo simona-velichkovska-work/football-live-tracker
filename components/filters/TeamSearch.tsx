@@ -1,35 +1,37 @@
-//Client
-"use client"
+// components/filters/TeamSearch.tsx
+"use client";
 
-import React from 'react';
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from "react";
 
-const TeamSearch = () => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();  
+type TeamSearchProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
 
-  const handleSearch = (query: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (query) {
-          params.set('query', query);
-      } else {
-          params.delete('query');
-      }
-      replace(`${pathname}?${params.toString()}`);
-  };
+export default function TeamSearch({ value, onChange }: TeamSearchProps) {
+  const [localValue, setLocalValue] = useState(value);
+
+  // 🔑 Keep local input in sync with parent state
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
+
+  // Debounce updates to parent
+  useEffect(() => {
+    const id = setTimeout(() => {
+      onChange(localValue);
+    }, 300);
+
+    return () => clearTimeout(id);
+  }, [localValue, onChange]);
+
   return (
-    <div>
-        <input
-          type="text"
-          placeholder="Search teams..."
-          className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onChange={(e) => {handleSearch(e.target.value)}}
-          defaultValue={searchParams.get('query')?.toString()}
-        />
-    </div>
-  )
+    <input
+      type="text"
+      placeholder="Search teams..."
+      value={localValue}
+      onChange={(e) => setLocalValue(e.target.value)}
+      className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  );
 }
-
-export default TeamSearch
-

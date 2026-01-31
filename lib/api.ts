@@ -5,6 +5,7 @@ import { API_BASE_URL, API_HEADERS } from "./constants";
 export async function getMatchesByDate(date: string) {
   try {
     // Construct the URL with query parameters
+    console.log("Fetching matches for date:", date);
     const url = new URL(`${API_BASE_URL}/fixtures`);
     url.searchParams.set("date", date);
 

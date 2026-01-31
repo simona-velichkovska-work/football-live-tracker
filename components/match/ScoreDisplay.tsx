@@ -21,7 +21,7 @@ export default function ScoreDisplay({
   return (
     <span
       className={`text-lg font-semibold transition-colors ${
-        highlight ? "text-green-600" : "text-gray-900"
+        highlight ? "text-green-600" : "text-gray-300"
       }`}
     >
       {score}
