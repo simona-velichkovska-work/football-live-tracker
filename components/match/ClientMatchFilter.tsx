@@ -76,7 +76,7 @@ export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
 
   /* -------------------- Render -------------------- */
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background container mx-auto px-4 py-6">
       {/* Header */}
       <header className="pt-8 pb-6 px-4">
         <div className="container mx-auto">
