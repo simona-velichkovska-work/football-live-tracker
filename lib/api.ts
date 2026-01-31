@@ -20,7 +20,7 @@ export async function getMatchesByDate(date: string) {
 
     const json = await res.json();
     if (json.errors && Object.keys(json.errors).length > 0) {
-      console.log("API errors:", json.errors.requests);
+      console.log("API errors:", json.errors);
       return null;
     }
 
