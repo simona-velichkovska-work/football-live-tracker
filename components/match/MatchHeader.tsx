@@ -1,16 +1,10 @@
 import TeamLogo from "./TeamLogo";
 import MatchStatus from "./MatchStatus";
 import ScoreDisplay from "./ScoreDisplay";
+import { Fixture } from "@/lib/types";
 
 type MatchHeaderProps = {
-  fixture: {
-    date: string;
-    venue?: { name?: string };
-    status: {
-      short: string;
-      elapsed: number | null;
-    };
-  };
+  fixture: Fixture;
   teams: {
     home: { name: string; logo: string };
     away: { name: string; logo: string};
@@ -29,8 +23,7 @@ export default function MatchHeader({
   return (
     <div className="flex flex-col gap-2">
       <MatchStatus
-        short={fixture.status.short}
-        elapsed={fixture.status.elapsed}
+        status={fixture.status}
       />
 
       <div className="flex items-center justify-between">
@@ -59,12 +52,6 @@ export default function MatchHeader({
           />
         </div>
       </div>
-
-      {fixture.venue?.name && (
-        <span className="text-xs text-gray-400">
-          {fixture.venue.name}
-        </span>
-      )}
     </div>
   );
 }

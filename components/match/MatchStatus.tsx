@@ -1,19 +1,14 @@
 "use client";
 
-export default function MatchStatus({
-  short,
-  elapsed,
-}: {short: string;
-  elapsed: number | null;}) {
-  let label = short;
+import { Status } from "@/lib/types";
+import Badge from "../ui/Badge";
 
-  if (short === "1H" || short === "2H") {
-    label = `${elapsed ?? ""}'`;
-  }
+export default function MatchStatus({
+  status,
+}: {status: Status;}) {
+  const { short } = status;
 
   return (
-    <span className="text-xs font-medium text-gray-500">
-      {label}
-    </span>
+    <Badge status={status} />
   );
 }
