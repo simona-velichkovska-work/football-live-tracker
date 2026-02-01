@@ -10,7 +10,7 @@ import { formatDate } from '@/lib/utils';
 export const revalidate = 60;
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: { params: { date: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ date: string }> }) {
   const dateParams = await params;
   const formattedDate = formatDate(dateParams.date);
   
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: { date: string } })
   };
 }
 
-export default async function FixturesPage({ params }: { params: { date: string } }) {
+export default async function FixturesPage({ params }: { params: Promise<{ date: string }> }) {
   const dateParams = await params;
   
   const formattedDate = formatDate(dateParams.date);
