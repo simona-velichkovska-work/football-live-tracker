@@ -18,7 +18,19 @@ export default async function MatchDetailPage({
 
   if (!Number.isFinite(idNum)) notFound();
 
-  const match = await getMatchById(idNum);
+  let match = null;
+  let error: string | null = null;
+
+  try {
+    match = await getMatchById(idNum);
+  } catch (e) {
+    error = (e as Error).message;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   if (!match) notFound();
 
   return (

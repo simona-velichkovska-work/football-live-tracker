@@ -24,10 +24,23 @@ export default async function LeaguePage({
 
   const season = STANDINGS_FIXTURES_SEASON;
 
-  const [{ league, standings }, fixtures] = await Promise.all([
-    getLeagueStandings(leagueId, season),
-    getLeagueFixtures(leagueId, season),
-  ]);
+  let league = null;
+  let standings = [];
+  let fixtures = [];
+  let error: string | null = null;
+
+  try {
+    [{ league, standings }, fixtures] = await Promise.all([
+      getLeagueStandings(leagueId, season),
+      getLeagueFixtures(leagueId, season),
+    ]);
+  } catch (e) {
+    error = (e as Error).message;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   const leagueMeta = fixtures?.[0]?.league ?? league;
 

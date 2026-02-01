@@ -1,28 +1,36 @@
-import React, { Suspense } from 'react';
-import MatchList from '@/components/match/MatchList';
-import { getFixturesByDate } from '@/lib/api';
-import { notFound } from 'next/navigation';
-import DatePicker from '@/components/fixtures/FixturesDatePicker';
-import LoadingFixturesPage from './loading';
-import { formatDate } from '@/lib/utils';
+import React, { Suspense } from "react";
+import MatchList from "@/components/match/MatchList";
+import { getFixturesByDate } from "@/lib/api";
+import { notFound } from "next/navigation";
+import DatePicker from "@/components/fixtures/FixturesDatePicker";
+import LoadingFixturesPage from "./loading";
+import { formatDate } from "@/lib/utils";
 
 // Enable cache revalidation
 export const revalidate = 60;
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: { params: Promise<{ date: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ date: string }>;
+}) {
   const dateParams = await params;
   const formattedDate = formatDate(dateParams.date);
-  
+
   return {
     title: `Fixtures - ${formattedDate}`,
     description: `Football matches scheduled for ${formattedDate}`,
   };
 }
 
-export default async function FixturesPage({ params }: { params: Promise<{ date: string }> }) {
+export default async function FixturesPage({
+  params,
+}: {
+  params: Promise<{ date: string }>;
+}) {
   const dateParams = await params;
-  
+
   const formattedDate = formatDate(dateParams.date);
 
   // Validate date format (YYYY-MM-DD)
@@ -31,15 +39,26 @@ export default async function FixturesPage({ params }: { params: Promise<{ date:
     notFound();
   }
 
-  // Fetch fixtures for the specified date
-  const fixtures = await getFixturesByDate(formattedDate);
+  let fixtures = [];
+  let error: string | null = null;
 
+  try {
+    // Fetch fixtures for the specified date
+    fixtures = await getFixturesByDate(formattedDate);
+  } catch (e) {
+    error = (e as Error).message;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+  
   // Format the date for display
-  const displayDate = new Date(dateParams.date).toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const displayDate = new Date(dateParams.date).toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   return (
@@ -55,22 +74,23 @@ export default async function FixturesPage({ params }: { params: Promise<{ date:
               <p className="text-muted-foreground">{displayDate}</p>
               {fixtures.length > 0 && (
                 <p className="text-sm text-muted-foreground mt-1">
-                  {fixtures.length} match{fixtures.length !== 1 ? 'es' : ''} scheduled
+                  {fixtures.length} match{fixtures.length !== 1 ? "es" : ""}{" "}
+                  scheduled
                 </p>
               )}
             </div>
-            
+
             {/* Date Picker */}
             <DatePicker currentDate={dateParams.date} />
           </div>
         </div>
       </header>
-            <Suspense fallback={<LoadingFixturesPage />}>
-      {/* Matches */}
-      <div className="container mx-auto px-4">
-        <MatchList matches={fixtures} />
-      </div>
-        </Suspense>
+      <Suspense fallback={<LoadingFixturesPage />}>
+        {/* Matches */}
+        <div className="container mx-auto px-4">
+          <MatchList matches={fixtures} />
+        </div>
+      </Suspense>
     </div>
   );
 }
