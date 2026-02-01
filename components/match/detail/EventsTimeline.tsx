@@ -8,17 +8,22 @@ type EventsTimelineProps = {
 };
 
 export default function EventsTimeline({ events }: EventsTimelineProps) {
-  // Defensive: API already sends ordered events, but never trust it
   const sortedEvents = [...events].sort((a, b) => {
-    const aTime = a.time.elapsed ?? 0;
-    const bTime = b.time.elapsed ?? 0;
-    return aTime - bTime;
+    const aElapsed = a.time.elapsed ?? 0;
+    const bElapsed = b.time.elapsed ?? 0;
+
+    if (aElapsed !== bElapsed) return aElapsed - bElapsed;
+
+    return (a.time.extra ?? 0) - (b.time.extra ?? 0);
   });
 
   return (
     <div className="flex flex-col gap-3">
-      {sortedEvents.map((event, index) => (
-        <EventItem key={index} event={event} />
+      {sortedEvents.map((event) => (
+        <EventItem
+          key={`${event.time.elapsed}-${event.time.extra}-${event.team?.id}-${event.type}`}
+          event={event}
+        />
       ))}
     </div>
   );

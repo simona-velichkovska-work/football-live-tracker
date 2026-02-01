@@ -1,14 +1,8 @@
 // components/match/detail/lineups/PlayerRow.tsx
-
-type Player = {
-  id: number;
-  name: string;
-  number: number | null;
-  pos: string;
-};
+import { LineupPlayer } from "@/lib/types";
 
 type PlayerRowProps = {
-  player: Player;
+  player: LineupPlayer;
   fallbackNumber: number;
   dimmed?: boolean;
 };
@@ -41,27 +35,27 @@ export default function PlayerRow({
     >
       {/* NUMBER */}
       <div className="w-8 h-8 rounded-full bg-[#272c35] flex items-center justify-center text-sm font-bold tabular-nums">
-        {player.number ?? fallbackNumber}
+        {player.player.number ?? fallbackNumber}
       </div>
 
       {/* NAME */}
       <div className="flex-1 min-w-0">
         <div className="font-medium text-foreground truncate">
-          {player.name}
+          {player.player.name}
         </div>
       </div>
 
       {/* POSITION BADGE */}
       <div
         className={`px-2 py-0.5 rounded text-xs font-semibold uppercase ${getPosStyle(
-          player.pos
+          player.player.pos
         )}`}
       >
-        {player.pos === "G"
+        {player.player.pos === "G"
           ? "GK"
-          : player.pos === "D"
+          : player.player.pos === "D"
           ? "DEF"
-          : player.pos === "M"
+          : player.player.pos === "M"
           ? "MID"
           : "FWD"}
       </div>

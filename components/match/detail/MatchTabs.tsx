@@ -7,7 +7,6 @@ import EventsTimeline from "./EventsTimeline";
 
 import { MatchEvent, TeamLineup, MatchStatistic } from "@/lib/types";
 import LineupDisplay from "./LineupDisplay";
-import { Stats } from "fs";
 import StatsComparison from "./StatsComparison";
 
 type MatchTabsProps = {

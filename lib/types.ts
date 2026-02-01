@@ -7,7 +7,7 @@ export interface Team {
 }
 
 export interface League {
-  id: string;
+  id: number;
   name: string;
   logo: string;
 }
@@ -19,7 +19,7 @@ export interface Fixture {
   timezone?: string;
   timestamp?: number;
   status: Status;
-  venue: Venue
+  venue?: Venue | null;
 }
 
 export interface Venue {
@@ -78,8 +78,8 @@ export const STATUS_MAP: Record<MatchStatus, string[]> = {
 export interface Status { 
     long: string, 
     short: string, 
-    elapsed: number, 
-    extra: number 
+    elapsed: number | null,
+    extra: number | null,
 }
 
 // Event type for match events

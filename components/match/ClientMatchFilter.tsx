@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import FilterBar from "@/components/filters/FilterBar";
 import MatchList from "@/components/match/MatchList";
 import { League, Match, MatchStatus } from "@/lib/types";
-import { FilteredMatchesByQuery, getMatchCategory } from "@/lib/utils";
+import { filteredMatchesByQuery, getMatchCategory } from "@/lib/utils";
 
 type FiltersState = {
   query: string;
@@ -35,10 +35,10 @@ export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
   const availableLeagues: League[] = useMemo(() => {
     if (!Array.isArray(matches)) return [];
 
-    const leagueMap = new Map<string, League>();
+    const leagueMap = new Map<number, League>();
 
     for (const match of matches) {
-      const id = match.league.id.toString();
+      const id = match.league.id;
       if (!leagueMap.has(id)) {
         leagueMap.set(id, {
           id,
@@ -57,7 +57,7 @@ export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
   const filteredMatches = useMemo(() => {
     if (!Array.isArray(matches)) return [];
 
-    let result = FilteredMatchesByQuery(matches, filters.query);
+    let result = filteredMatchesByQuery(matches, filters.query);
 
     if (filters.status !== "all") {
       result = result.filter(

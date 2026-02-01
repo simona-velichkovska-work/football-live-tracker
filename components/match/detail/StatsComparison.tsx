@@ -2,23 +2,10 @@
 
 import TeamLogo from "../TeamLogo";
 import StatBar from "./StatBar";
-
-type Stat = {
-  type: string;
-  value: number | string | null;
-};
-
-type TeamStats = {
-  team: {
-    id: number;
-    name: string;
-    logo: string;
-  };
-  statistics: Stat[];
-};
+import { MatchStatistic } from "@/lib/types";
 
 type StatsComparisonProps = {
-  stats: TeamStats[];
+  stats: MatchStatistic[];
 };
 
 export default function StatsComparison({ stats }: StatsComparisonProps) {

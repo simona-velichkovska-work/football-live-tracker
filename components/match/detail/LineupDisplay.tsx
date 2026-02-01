@@ -2,6 +2,8 @@
 
 import { TeamLineup } from "@/lib/types";
 import PlayerRow from "./PlayerRow";
+import Image from "next/image";
+import TeamLogo from "../TeamLogo";
 
 type LineupDisplayProps = {
   lineups: TeamLineup[];
@@ -19,11 +21,7 @@ export default function LineupDisplay({ lineups }: LineupDisplayProps) {
           <div key={team.id} className="space-y-4">
             {/* TEAM HEADER */}
             <div className="flex items-center gap-3">
-              <img
-                src={team.logo}
-                alt={team.name}
-                className="w-8 h-8 object-contain"
-              />
+              <TeamLogo name={team.name} logo={team.logo} />
               <div>
                 <div className="font-semibold text-foreground">
                   {team.name}
@@ -40,10 +38,12 @@ export default function LineupDisplay({ lineups }: LineupDisplayProps) {
             {coach && (
               <div className="flex items-center gap-3 px-3 py-2 bg-[#272c35]/30 rounded-lg">
                 {coach.photo && (
-                  <img
+                  <Image
                     src={coach.photo}
                     alt={coach.name ?? "Coach"}
-                    className="w-10 h-10 rounded-full object-cover bg-[#272c35]"
+                    width={24}
+                    height={24}
+                    className="object-contain bg-[#272c35] rounded-full"
                   />
                 )}
                 <div>
@@ -64,10 +64,10 @@ export default function LineupDisplay({ lineups }: LineupDisplayProps) {
               </div>
 
               <div className="match-card rounded-xl divide-y divide-border overflow-hidden">
-                {startXI.map(({ player }, index) => (
+                {startXI.map((lineupPlayer, index) => (
                   <PlayerRow
-                    key={player.id}
-                    player={player}
+                    key={lineupPlayer.player.id ?? `${team.id}-${index}`}
+                    player={lineupPlayer}
                     fallbackNumber={index + 1}
                   />
                 ))}
@@ -82,10 +82,10 @@ export default function LineupDisplay({ lineups }: LineupDisplayProps) {
                 </div>
 
                 <div className="match-card rounded-xl divide-y divide-border overflow-hidden">
-                  {substitutes.map(({ player }, index) => (
+                  {substitutes.map((lineupPlayer, index) => (
                     <PlayerRow
-                      key={player.id}
-                      player={player}
+                      key={lineupPlayer.player.id}
+                      player={lineupPlayer}
                       fallbackNumber={index + 12}
                       dimmed
                     />

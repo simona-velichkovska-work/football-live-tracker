@@ -1,9 +1,24 @@
-import React from 'react'
+// app/league/[id]/not-found.tsx
+import Link from "next/link";
+import EmptyState from "@/components/ui/EmptyState";
 
-const MatchDetailsNotFoundPage = () => {
+export default function NotFound() {
   return (
-    <div>404 Not Found</div>
-  )
-}
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        <EmptyState
+          title="Match not found"
+          message="The match you're looking for doesn't exist, is unavailable, or you may have followed an outdated link."
+          icon="⚽"
+        />
 
-export default MatchDetailsNotFoundPage
+        <div className="mt-6 flex justify-center">
+          <Link
+            href="/"
+            className="rounded-lg bg-[#1cca5b] px-4 py-2 text-sm font-medium text-[#2b303b] hover:opacity-90 transition"
+          >
+            Back to home
+          </Link>
+        </div>
+      </div>
+  );
+}

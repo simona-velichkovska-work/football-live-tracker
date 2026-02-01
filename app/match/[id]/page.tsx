@@ -1,29 +1,29 @@
-import { REVALIDATE_PAGE_SECONDS_PRIMARY } from '@/lib/constants';
-import React from 'react';
-import { getMatchById } from '@/lib/api';
-import MatchTabs from '@/components/match/detail/MatchTabs';
-import MatchDetailHeader from '@/components/match/detail/MatchDetailHeader';
-import Link from 'next/link';
+import { REVALIDATE_PAGE_SECONDS_PRIMARY } from "@/lib/constants";
+import React from "react";
+import { getMatchById } from "@/lib/api";
+import MatchTabs from "@/components/match/detail/MatchTabs";
+import MatchDetailHeader from "@/components/match/detail/MatchDetailHeader";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 // Enable ISR - revalidate every 60 seconds
 export const revalidate = REVALIDATE_PAGE_SECONDS_PRIMARY;
 
-export default async function MatchDetailPage({ params }: { params: { id: string } }) {
-  const idParams = await params;
+export default async function MatchDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const idNum = Number(id);
 
+  if (!Number.isFinite(idNum)) notFound();
 
-  let match;
-  try {
-    match = await getMatchById(parseInt(idParams.id));
-    console.log("Fetched match data:", match.fixture);
-  } catch (error) {
-    console.error("Error fetching matches:", error);
-    match = null; // Return empty array instead of null
-  }
-  
+  const match = await getMatchById(idNum);
+  if (!match) notFound();
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div>
       {/* Back Button */}
       <div className="container mx-auto px-4 pt-8">
         <Link
@@ -37,9 +37,7 @@ export default async function MatchDetailPage({ params }: { params: { id: string
       {/* Page Header */}
       <header className="pt-4 pb-8 shadow-md">
         <div className="container mx-auto text-center px-4">
-          <h1 className="text-4xl md:text-5xl font-extrabold">
-            Match Details
-          </h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold">Match Details</h1>
         </div>
       </header>
 
@@ -48,22 +46,22 @@ export default async function MatchDetailPage({ params }: { params: { id: string
         {/* Card-like container for header */}
         <div className="bg-gray-800 shadow-lg rounded-xl p-6">
           <MatchDetailHeader
-            fixture={match?.fixture}
-            league={match?.league}
-            teams={match?.teams}
-            goals={match?.goals}
+            fixture={match.fixture}
+            league={match.league}
+            teams={match.teams}
+            goals={match.goals}
           />
         </div>
 
         {/* Tabs */}
         <div className="mt-10 bg-gray-800 shadow-lg rounded-xl p-6">
           <MatchTabs
-            events={match?.events || []}
-            lineups={match?.lineups || []}
-            statistics={match?.statistics || []}
+            events={match.events ?? []}
+            lineups={match.lineups ?? []}
+            statistics={match.statistics ?? []}
           />
         </div>
       </main>
     </div>
-  )
+  );
 }

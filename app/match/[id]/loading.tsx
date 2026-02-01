@@ -1,9 +1,8 @@
+import MatchDetailSkeleton from '@/components/skeletons/MatchDetailSkeleton'
 import React from 'react'
 
-const LoadingMatchDetailsPage = () => {
-  return (
-    <div>Loading...</div>
-  )
+export default function Loading() {
+    return (
+        <MatchDetailSkeleton />
+    )
 }
-
-export default LoadingMatchDetailsPage
