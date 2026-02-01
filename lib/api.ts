@@ -1,4 +1,4 @@
-import { API_BASE_URL, API_HEADERS } from "./constants";
+import { API_BASE_URL, getApiHeaders } from "./constants";
 
 // Helper to handle API errors
 function apiError(message: string): never {
@@ -11,7 +11,7 @@ export async function getFixturesByDate(date: string) {
   url.searchParams.set("date", date);
 
   const res = await fetch(url.toString(), {
-    headers: API_HEADERS,
+    headers: getApiHeaders(),
   });
 
   if (!res.ok) {
@@ -43,7 +43,7 @@ export async function getLiveMatches() {
   url.searchParams.set("live", "all");
 
   const res = await fetch(url.toString(), {
-    headers: API_HEADERS,
+    headers: getApiHeaders(),
     cache: "no-store",
   });
 
@@ -72,7 +72,7 @@ export async function getMatchById(id: number) {
   url.searchParams.set("id", id.toString());
 
   const res = await fetch(url.toString(), {
-    headers: API_HEADERS,
+    headers: getApiHeaders(),
   });
 
   if (!res.ok) {
@@ -102,7 +102,7 @@ export async function getLeagueStandings(leagueId: number, season: number) {
   url.searchParams.set("season", season.toString());
 
   const res = await fetch(url.toString(), {
-    headers: API_HEADERS,
+    headers: getApiHeaders(),
   });
 
   if (!res.ok) {
@@ -134,7 +134,7 @@ export async function getLeagueFixtures(leagueId: number, season: number) {
   url.searchParams.set("season", season.toString());
 
   const res = await fetch(url.toString(), {
-    headers: API_HEADERS,
+    headers: getApiHeaders(),
   });
 
   if (!res.ok) {
