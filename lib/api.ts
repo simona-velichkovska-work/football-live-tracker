@@ -6,32 +6,35 @@ function apiError(message: string): never {
 }
 
 // Get All fixtures/matches for a specific date
-// Refactor: getMatchesByDate => getFixturesByDate ?
-export async function getMatchesByDate(date: string) {
-  try {
-    // Construct the URL with query parameters
-    const url = new URL(`${API_BASE_URL}/fixtures`);
-    url.searchParams.set("date", date);
+export async function getFixturesByDate(date: string) {
+  const url = new URL(`${API_BASE_URL}/fixtures`);
+  url.searchParams.set("date", date);
 
-    // Fetch data from the API
-    const res = await fetch(url.toString(), {
-      headers: API_HEADERS,
-    });
+  const res = await fetch(url.toString(), {
+    headers: API_HEADERS,
+  });
 
-    if (!res.ok) {
-      return null;
-    }
-
-    const json = await res.json();
-    if (json.errors && Object.keys(json.errors).length > 0) {
-      console.log("API errors:", json.errors);
-      return null;
-    }
-
-    return json.response ?? [];
-  } catch {
-    return null;
+  if (!res.ok) {
+    apiError(`Failed to fetch matches (${res.status})`);
   }
+
+  const json = await res.json();
+
+  if (json?.errors && Object.keys(json.errors).length > 0) {
+    const msg = JSON.stringify(json.errors).toLowerCase();
+
+    if (msg.includes("limit") || msg.includes("request")) {
+      apiError("Rate limit exceeded. Try again later.");
+    }
+
+    if(msg.includes("plan") || msg.includes("free")){
+      apiError(JSON.stringify(json.errors.plan));
+    }
+
+    apiError("Oops, there's some error from the API. Please try again later.");
+  }
+
+  return json.response ?? [];
 }
 
 // Get all live matches
@@ -101,7 +104,6 @@ export async function getLeagueStandings(leagueId: number, season: number) {
 
   const res = await fetch(url.toString(), {
     headers: API_HEADERS,
-    next: { revalidate: 60 },
   });
 
   if (!res.ok) {

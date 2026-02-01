@@ -1,22 +1,19 @@
 import React, { Suspense } from 'react';
 import MatchList from '@/components/match/MatchList';
-import { getMatchesByDate } from '@/lib/api';
+import { getFixturesByDate } from '@/lib/api';
 import { notFound } from 'next/navigation';
 import DatePicker from '@/components/fixtures/FixturesDatePicker';
 import LoadingFixturesPage from './loading';
+import { formatDate } from '@/lib/utils';
+import { REVALIDATE_PAGE_SECONDS_PRIMARY } from '@/lib/constants';
 
-// Enable ISR - revalidate every 60 seconds
-export const revalidate = 60;
+// Enable cache revalidation
+export const revalidate = REVALIDATE_PAGE_SECONDS_PRIMARY;
 
 // Generate metadata for the page
 export async function generateMetadata({ params }: { params: { date: string } }) {
   const dateParams = await params;
-  const formattedDate = new Date(dateParams.date).toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const formattedDate = formatDate(dateParams.date);
   
   return {
     title: `Fixtures - ${formattedDate}`,
@@ -27,6 +24,8 @@ export async function generateMetadata({ params }: { params: { date: string } })
 export default async function FixturesPage({ params }: { params: { date: string } }) {
   const dateParams = await params;
   
+  const formattedDate = formatDate(dateParams.date);
+
   // Validate date format (YYYY-MM-DD)
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   if (!dateRegex.test(dateParams.date)) {
@@ -34,14 +33,7 @@ export default async function FixturesPage({ params }: { params: { date: string 
   }
 
   // Fetch fixtures for the specified date
-  let fixtures;
-  try {
-    fixtures = await getMatchesByDate(dateParams.date);
-  } catch (error) { 
-    console.error("Error fetching fixtures:", error);
-    // Re-throw to trigger error.tsx
-    throw new Error('Failed to fetch fixtures');
-  }
+  const fixtures = await getFixturesByDate(formattedDate);
 
   // Format the date for display
   const displayDate = new Date(dateParams.date).toLocaleDateString('en-US', {

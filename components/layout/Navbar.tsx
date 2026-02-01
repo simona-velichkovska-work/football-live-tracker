@@ -4,17 +4,18 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { getTodayDate } from '@/lib/utils';
 
 const Navbar = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const getTodayDate = () => new Date().toISOString().split('T')[0];
+  const todayDate = getTodayDate();
 
   const navItems = [
     { href: '/', label: 'Today' },
     { href: '/live', label: 'Live' },
-    { href: `/fixtures/${getTodayDate()}`, label: 'Fixtures' },
+    { href: `/fixtures/${todayDate}`, label: 'Fixtures' },
   ];
 
   const closeMenu = () => setIsMenuOpen(false);
