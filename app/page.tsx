@@ -1,6 +1,6 @@
 
 import ClientMatchFilter from "@/components/match/ClientMatchFilter";
-import { getMatchesByDate } from "@/lib/api";
+import { getFixturesByDate } from "@/lib/api";
 import { REVALIDATE_HOME_PAGE_SECONDS } from "@/lib/constants";
 import { getTodayDate } from "@/lib/utils";
 
@@ -15,7 +15,7 @@ export default async function HomePage() {
   // Fetch matches for today
   // Add error handling
   let matches;
-  matches = await getMatchesByDate(todayMatchDate);
+  matches = await getFixturesByDate(todayMatchDate);
 
   return (
   

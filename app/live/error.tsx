@@ -1,10 +1,10 @@
-// app/fixtures/[date]/error.tsx
+// app/live/error.tsx
 "use client";
 
 import React from "react";
 import Link from "next/link";
 
-export default function FixturesError({
+export default function LiveError({
   error,
   reset,
 }: {

@@ -1,10 +1,10 @@
-// app/league/[id]/error.tsx
+// app/match/[id]/error.tsx
 "use client";
 
 import React from "react";
 import Link from "next/link";
 
-export default function LeagueError({
+export default function MatchError({
   error,
   reset,
 }: {

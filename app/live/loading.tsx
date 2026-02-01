@@ -1,9 +1,10 @@
+import Spinner from '@/components/ui/Spinner'
 import React from 'react'
 
-const LiveLoadingPage = () => {
+export default function Loading() {
   return (
-    <div>Loading...</div>
+    <div className="min-h-screen flex justify-center">
+      <Spinner label="Loading live matches..." />
+    </div>
   )
 }
-
-export default LiveLoadingPage

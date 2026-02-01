@@ -1,4 +1,4 @@
-// app/league/[id]/not-found.tsx
+// app/match/[id]/not-found.tsx
 import Link from "next/link";
 import EmptyState from "@/components/ui/EmptyState";
 

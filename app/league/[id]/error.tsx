@@ -23,7 +23,9 @@ export default function LeagueError({
         </h2>
 
         {/* Message */}
-        <p className="text-sm text-gray-400 max-w-md">{error.message}</p>
+        <p className="text-sm text-gray-400 max-w-md">
+          {error.message}
+        </p>
 
         {/* Actions */}
         <div className="flex items-center gap-4">

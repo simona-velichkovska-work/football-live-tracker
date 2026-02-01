@@ -8,26 +8,36 @@ type UseLiveScoresOptions = {
   intervalMs?: number;
 };
 
-export function useLiveScores(
-  options: UseLiveScoresOptions = {}
-) {
+export function useLiveScores(options: UseLiveScoresOptions = {}) {
   const { intervalMs = 30_000 } = options;
 
   const [matches, setMatches] = useState<Match[]>([]);
   const [isFetching, setIsFetching] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [isPaused, setIsPaused] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchMatches = useCallback(async () => {
     try {
       setIsFetching(true);
+      setError(null);
+
       const data = await getLiveMatches();
-      setMatches(data);
+
+      setMatches(Array.isArray(data) ? data : []);
       setLastUpdated(new Date());
-    } catch (error) {
-      console.error("Failed to fetch live scores", error);
+    } catch (err) {
+      console.error("Failed to fetch live scores", err);
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to load live scores"
+      );
+      setMatches([]);
+
     } finally {
       setIsFetching(false);
     }
@@ -36,17 +46,14 @@ export function useLiveScores(
   const startPolling = useCallback(() => {
     if (intervalRef.current) return;
 
-    intervalRef.current = setInterval(
-      fetchMatches,
-      intervalMs
-    );
+    intervalRef.current = setInterval(fetchMatches, intervalMs);
   }, [fetchMatches, intervalMs]);
 
   const stopPolling = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
+    if (!intervalRef.current) return;
+
+    clearInterval(intervalRef.current);
+    intervalRef.current = null;
   }, []);
 
   const togglePause = useCallback(() => {
@@ -58,16 +65,19 @@ export function useLiveScores(
     fetchMatches();
   }, [fetchMatches]);
 
-  // Polling control
+  // Polling control + instant refresh on resume
   useEffect(() => {
     if (isPaused) {
       stopPolling();
-    } else {
-      startPolling();
+      return;
     }
 
+    // Fetch immediately when resuming
+    fetchMatches();
+    startPolling();
+
     return stopPolling;
-  }, [isPaused, startPolling, stopPolling]);
+  }, [isPaused, fetchMatches, startPolling, stopPolling]);
 
   return {
     matches,
@@ -76,5 +86,6 @@ export function useLiveScores(
     isPaused,
     togglePause,
     refetch: fetchMatches,
+    error, // expose error
   };
 }

@@ -2,19 +2,29 @@
 
 import { useEffect, useState } from "react";
 
-export default function LastUpdated({ lastUpdated }: {lastUpdated: Date;}) {
+type Props = {
+  lastUpdated: Date | null;
+};
+
+export default function LastUpdated({ lastUpdated }: Props) {
   const [secondsAgo, setSecondsAgo] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!lastUpdated) return;
+    if (!lastUpdated) {
+      setSecondsAgo(null);
+      return;
+    }
+
+    const timestamp = lastUpdated.getTime(); // capture once
 
     function update() {
-      const diff =
-        Math.floor((Date.now() - lastUpdated.getTime()) / 1000);
+      const diff = Math.floor((Date.now() - timestamp) / 1000);
+
       setSecondsAgo(diff);
     }
 
     update();
+
     const interval = setInterval(update, 1000);
 
     return () => clearInterval(interval);
