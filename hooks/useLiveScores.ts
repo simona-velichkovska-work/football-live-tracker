@@ -24,20 +24,21 @@ export function useLiveScores(options: UseLiveScoresOptions = {}) {
       setIsFetching(true);
       setError(null);
 
-      const data = await getLiveMatches();
+      const res = await fetch("/api/live");
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to load live scores");
+      }
 
       setMatches(Array.isArray(data) ? data : []);
       setLastUpdated(new Date());
     } catch (err) {
       console.error("Failed to fetch live scores", err);
-
       setError(
-        err instanceof Error
-          ? err.message
-          : "Failed to load live scores"
+        err instanceof Error ? err.message : "Failed to load live scores"
       );
       setMatches([]);
-
     } finally {
       setIsFetching(false);
     }
