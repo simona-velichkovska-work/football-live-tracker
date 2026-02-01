@@ -3,6 +3,9 @@ import ClientMatchFilter from "@/components/match/ClientMatchFilter";
 import { getFixturesByDate } from "@/lib/api";
 import { getTodayDate } from "@/lib/utils";
 
+// Skip prerendering — fetch only runs per request, not at build time
+export const dynamic = "force-dynamic";
+
 //cache rendered page for 1 minute
 export const revalidate = 60;
 
