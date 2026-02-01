@@ -5,10 +5,9 @@ import { notFound } from 'next/navigation';
 import DatePicker from '@/components/fixtures/FixturesDatePicker';
 import LoadingFixturesPage from './loading';
 import { formatDate } from '@/lib/utils';
-import { REVALIDATE_PAGE_SECONDS_PRIMARY } from '@/lib/constants';
 
 // Enable cache revalidation
-export const revalidate = REVALIDATE_PAGE_SECONDS_PRIMARY;
+export const revalidate = 60;
 
 // Generate metadata for the page
 export async function generateMetadata({ params }: { params: { date: string } }) {

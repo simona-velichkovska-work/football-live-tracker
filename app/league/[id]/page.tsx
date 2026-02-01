@@ -1,5 +1,4 @@
 import {
-  REVALIDATE_PAGE_SECONDS_PRIMARY,
   STANDINGS_FIXTURES_SEASON,
 } from "@/lib/constants";
 import { getLeagueStandings, getLeagueFixtures } from "@/lib/api";
@@ -11,7 +10,7 @@ import TeamLogo from "@/components/match/TeamLogo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const revalidate = REVALIDATE_PAGE_SECONDS_PRIMARY;
+export const revalidate = 60;
 
 export default async function LeaguePage({
   params,
