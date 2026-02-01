@@ -39,32 +39,31 @@ export async function getFixturesByDate(date: string) {
 
 // Get all live matches
 export async function getLiveMatches() {
-  try {
-    const url = new URL(`${API_BASE_URL}/fixtures`);
-    url.searchParams.set("live", "all");
-    
-    const res = await fetch(url.toString(), {
-      headers: API_HEADERS,
-    }); 
-    if (res.status === 429) {
-      console.warn("Rate limit exceeded");
-      return null;
-    }
+  const url = new URL(`${API_BASE_URL}/fixtures`);
+  url.searchParams.set("live", "all");
 
-    if (!res.ok) {
-      return null;
-    }
-    
-    const json = await res.json();
-    if (json.errors && Object.keys(json.errors).length > 0) {
-      return null;
-    }
+  const res = await fetch(url.toString(), {
+    headers: API_HEADERS,
+    cache: "no-store",
+  });
 
-    return json.response ?? [];
-
-  } catch {
-    return null;
+  if (!res.ok) {
+    apiError(`Failed to fetch live matches (${res.status})`);
   }
+
+  const json = await res.json();
+
+  if (json?.errors && Object.keys(json.errors).length > 0) {
+    const msg = JSON.stringify(json.errors).toLowerCase();
+
+    if (msg.includes("limit") || msg.includes("request")) {
+      apiError("Rate limit exceeded. Try again later.");
+    }
+
+   apiError("API error: " + JSON.stringify(json.errors));
+  }
+
+  return json.response ?? [];
 }
 
 // Get a match by its ID
