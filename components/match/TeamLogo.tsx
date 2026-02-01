@@ -6,12 +6,12 @@ import { TeamLogo as TeamLogoProps } from '@/lib/types';
 export default function TeamLogo({ logo, name, size = 40 }: TeamLogoProps) {
   if (!logo) return null;
   return (
-    <div className="relative w-[size] h-[size]">
+    <div className="relative" style={{ width: size, height: size }}>
       <Image
         src={logo}
         alt={name}
-        width={size}
-        height={size}
+        fill
+        sizes={`${size}px`}
         className="object-contain"
         unoptimized={true} // optional if logos are from external sources without config
       />

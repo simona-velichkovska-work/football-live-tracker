@@ -1,15 +1,10 @@
-import Badge from '@/components/ui/Badge'
-import Button from '@/components/ui/Button'
-import Spinner from '@/components/ui/Spinner'
-import TabPanel from '@/components/ui/TabPanel'
-import Tabs from '@/components/ui/Tabs'
-import React from 'react'
+import Spinner from "@/components/ui/Spinner";
+import React from "react";
 
-const LoadingHomePage = () => {
-
+export default function Loading() {
   return (
-    <Spinner label="Loading..."/>
-  )
-}
-
-export default LoadingHomePage
+    <div className="min-h-screen flex justify-center">
+      <Spinner label="Loading today's matches..." />
+    </div>
+  );
+};

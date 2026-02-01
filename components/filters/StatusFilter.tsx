@@ -19,6 +19,7 @@ export default function StatusFilter({
 
         return (
           <button
+            type="button"
             key={status.value}
             onClick={() => onChange(status.value)}
             className={`

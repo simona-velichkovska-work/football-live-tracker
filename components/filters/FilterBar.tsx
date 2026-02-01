@@ -24,7 +24,7 @@ export default function FilterBar({
   filters,
   onChange,
 }: FilterBarProps) {
-  /* -------------------- Handlers -------------------- */
+
 
   const handleStatusChange = (status: MatchStatus | "all") => {
     onChange((prev) => ({ ...prev, status }));
@@ -38,15 +38,12 @@ export default function FilterBar({
     onChange((prev) => ({ ...prev, leagues }));
   };
 
-  /* -------------------- Render -------------------- */
+
   return (
     <div className="glass-effect py-4 mb-6">
       <div className="container mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <StatusFilter
-            value={filters.status}
-            onChange={handleStatusChange}
-          />
+          <StatusFilter value={filters.status} onChange={handleStatusChange} />
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:ml-auto">
             <LeagueFilter
@@ -55,12 +52,7 @@ export default function FilterBar({
               onChange={handleLeaguesChange}
             />
 
-            <TeamSearch
-              value={filters.query}
-              onChange={(query) =>
-                onChange((prev) => ({ ...prev, query }))
-              }
-            />
+            <TeamSearch value={filters.query} onChange={handleQueryChange} />
 
           </div>
         </div>

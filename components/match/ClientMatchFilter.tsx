@@ -14,14 +14,14 @@ type FiltersState = {
 };
 
 export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
-  /* -------------------- Filters (local state) -------------------- */
+  // Local state
   const [filters, setFilters] = useState<FiltersState>({
     query: "",
     status: "all",
     leagues: [],
   });
 
-  /* -------------------- Today label -------------------- */
+  // Memoized today's date display
   const displayToday = useMemo(() => {
     return new Date().toLocaleDateString("en-US", {
       weekday: "long",
@@ -31,7 +31,7 @@ export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
     });
   }, []);
 
-  /* -------------------- Available leagues -------------------- */
+  // Memoized available leagues from matches
   const availableLeagues: League[] = useMemo(() => {
     if (!Array.isArray(matches)) return [];
 
@@ -53,11 +53,11 @@ export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
     );
   }, [matches]);
 
-  /* -------------------- Client-side filtering -------------------- */
+  // Memoized filtered matches based on current filters
   const filteredMatches = useMemo(() => {
     if (!Array.isArray(matches)) return [];
 
-    let result = filteredMatchesByQuery(matches, filters.query);
+    let result = filteredMatchesByQuery(matches, filters.query.trim());
 
     if (filters.status !== "all") {
       result = result.filter(
@@ -74,7 +74,6 @@ export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
     return result;
   }, [matches, filters]);
 
-  /* -------------------- Render -------------------- */
   return (
     <div className="min-h-screen bg-background container mx-auto px-4 py-6">
       {/* Header */}

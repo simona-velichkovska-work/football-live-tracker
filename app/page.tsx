@@ -9,13 +9,12 @@ export const revalidate = REVALIDATE_HOME_PAGE_SECONDS;
 
 //Show today's football matches with filtering
 export default async function HomePage() {
+
   // Get today's date in YYYY-MM-DD format
   const todayMatchDate = getTodayDate();
 
   // Fetch matches for today
-  // Add error handling
-  let matches;
-  matches = await getFixturesByDate(todayMatchDate);
+  const matches = await getFixturesByDate(todayMatchDate);
 
   return (
   

@@ -89,12 +89,14 @@ export default function LeagueFilter({
           )}
 
           {availableLeagues.map((league) => {
-            const isSelected = value.includes(league.id);
+            const id = league.id.toString();
+            const isSelected = value.includes(id);
 
             return (
               <button
+                type="button"
                 key={league.id}
-                onClick={() => handleLeagueToggle(league.id)}
+                onClick={() => handleLeagueToggle(id)}
                 className="w-full px-4 py-2.5 text-left hover:bg-secondary/50 flex items-center gap-3"
               >
                 {/* Checkbox */}
