@@ -133,7 +133,6 @@ export async function getLeagueFixtures(leagueId: number, season: number) {
 
   const res = await fetch(url.toString(), {
     headers: API_HEADERS,
-    next: { revalidate: 60 },
   });
 
   if (!res.ok) {
