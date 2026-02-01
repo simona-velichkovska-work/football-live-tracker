@@ -19,6 +19,13 @@ export interface Fixture {
   timezone?: string;
   timestamp?: number;
   status: Status;
+  venue: Venue
+}
+
+export interface Venue {
+  id: number | null;
+  name: string | null;
+  city: string | null;
 }
 
 export interface Goals {
@@ -74,3 +81,85 @@ export interface Status {
     elapsed: number, 
     extra: number 
 }
+
+// Event type for match events
+export type MatchEvent = {
+  time: {
+    elapsed: number | null;
+    extra: number | null;
+  };
+  team: {
+    id: number;
+    name: string;
+    logo: string;
+  };
+  player: {
+    id: number | null;
+    name: string | null;
+  };
+  assist: {
+    id: number | null;
+    name: string | null;
+  } | null;
+  type: string;   // "Goal", "Card", "subst", etc.
+  detail: string; // "Yellow Card", "Substitution 1", etc.
+  comments: string | null;
+};
+
+export type LineupPlayer = {
+  player: {
+    id: number;
+    name: string;
+    number: number | null;
+    pos: "G" | "D" | "M" | "F";
+    grid: string | null; // e.g. "2:4"
+  };
+};
+
+
+export type TeamLineup = {
+  team: {
+    id: number;
+    name: string;
+    logo: string;
+    colors?: {
+      player: {
+        primary: string;
+        number: string;
+        border: string;
+      };
+      goalkeeper: {
+        primary: string;
+        number: string;
+        border: string;
+      };
+    };
+  };
+  formation: string | null;
+  startXI: LineupPlayer[];
+  substitutes: LineupPlayer[];
+  coach?: {
+    id: number;
+    name: string | null;
+    photo: string | null;
+  };
+};
+
+export type StatisticItem = {
+  type: string; // "Shots on Goal", "Ball Possession", etc.
+  value: number | string | null;
+};
+
+
+// Statistic type for match statistics
+export type MatchStatistic = {
+  team: {
+    id: number;
+    name: string;
+    logo: string;
+  };
+  statistics: StatisticItem[];
+};
+
+
+

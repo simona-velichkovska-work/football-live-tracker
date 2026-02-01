@@ -9,5 +9,9 @@ type TabPanelProps = {
 };
 
 export default function TabPanel({ children }: TabPanelProps) {
-  return <div className="text-sm text-gray-300">{children}</div>;
+  return (
+    <div className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg">
+      {children}
+    </div>
+  );
 }

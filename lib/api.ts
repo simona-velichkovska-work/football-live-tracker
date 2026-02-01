@@ -60,3 +60,31 @@ export async function getLiveMatches() {
     return null;
   }
 }
+
+// Get a match by its ID
+export async function getMatchById(id: number) {
+  try {
+    // Construct the URL with query parameters
+    const url = new URL(`${API_BASE_URL}/fixtures`);
+    url.searchParams.set("id", id.toString());
+
+    // Fetch data from the API
+    const res = await fetch(url.toString(), {
+      headers: API_HEADERS,
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
+    const json = await res.json();
+    if (json.errors && Object.keys(json.errors).length > 0) {
+      console.log("API errors:", json.errors);
+      return null;
+    }
+
+    return json.response?.[0] ?? null;
+  } catch {
+    return null;
+  }
+}
