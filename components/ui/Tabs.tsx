@@ -1,7 +1,7 @@
 // components/ui/Tabs.tsx
 "use client";
 
-import { ReactNode, useState } from "react";
+import { isValidElement, ReactElement, ReactNode, useState } from "react";
 
 type Tab = {
   id: string;
@@ -14,8 +14,20 @@ type TabsProps = {
   children: ReactNode;
 };
 
+function isTabPanel(
+  node: ReactNode
+): node is ReactElement<{ tabId: string }> {
+  return isValidElement<{ tabId: string }>(node) && typeof node.props.tabId === "string";
+}
+
 export default function Tabs({ tabs, children }: TabsProps) {
   const [activeTab, setActiveTab] = useState(tabs[0].id);
+
+  const panels = Array.isArray(children) ? children : [children];
+  const activePanel = panels.find(
+    (child): child is ReactElement<{ tabId: string }> =>
+      isTabPanel(child) && child.props.tabId === activeTab
+  );
 
   return (
     <div className="w-full">
@@ -45,11 +57,7 @@ export default function Tabs({ tabs, children }: TabsProps) {
       </div>
 
       {/* TAB CONTENT */}
-      <div className="mt-4">
-        {Array.isArray(children)
-          ? children.find((child: any) => child.props.tabId === activeTab)
-          : children}
-      </div>
+      <div className="mt-4">{activePanel}</div>
     </div>
   );
 }

@@ -80,7 +80,7 @@ export default function ClientMatchFilter({ matches }: { matches: Match[] }) {
       <header className="pt-8 pb-6 px-4">
         <div className="container mx-auto">
           <h1 className="text-3xl font-bold text-foreground">
-            Today's Matches
+            Today&apos;s Matches
           </h1>
           <p className="text-sm text-muted-foreground">{displayToday}</p>
         </div>

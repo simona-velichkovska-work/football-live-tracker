@@ -3,6 +3,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { League } from "@/lib/types";
+import TeamLogo from "../match/TeamLogo";
 
 type LeagueFilterProps = {
   availableLeagues: League[];
@@ -125,10 +126,9 @@ export default function LeagueFilter({
                 </div>
 
                 {league.logo && (
-                  <img
-                    src={league.logo}
-                    alt={league.name}
-                    className="w-5 h-5 object-contain"
+                  <TeamLogo
+                    logo={league.logo}
+                    name={league.name}
                   />
                 )}
 
