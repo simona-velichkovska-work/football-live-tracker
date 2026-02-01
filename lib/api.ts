@@ -2,9 +2,7 @@ import { API_BASE_URL, getApiHeaders } from "./constants";
 
 // Helper to handle API errors
 function apiError(message: string): never {
-  const error = new Error(message);
-  (error as any).digest = message;
-  throw error;
+  throw new Error(message, { cause: message });
 }
 
 // Get All fixtures/matches for a specific date
