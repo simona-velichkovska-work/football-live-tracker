@@ -1,4 +1,5 @@
 import ClientMatchFilter from "@/components/match/ClientMatchFilter";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 import { getFixturesByDate } from "@/lib/api";
 import { getTodayDate } from "@/lib/utils";
 
@@ -24,7 +25,7 @@ export default async function HomePage() {
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <ErrorMessage message={error} />;
   }
 
   return (

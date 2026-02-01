@@ -9,6 +9,7 @@ import TabPanel from "@/components/ui/TabPanel";
 import TeamLogo from "@/components/match/TeamLogo";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
 export const revalidate = 60;
 
@@ -39,7 +40,7 @@ export default async function LeaguePage({
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <ErrorMessage message={error} />;
   }
 
   const leagueMeta = fixtures?.[0]?.league ?? league;

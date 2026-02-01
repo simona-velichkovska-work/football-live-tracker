@@ -4,6 +4,7 @@ import MatchTabs from "@/components/match/detail/MatchTabs";
 import MatchDetailHeader from "@/components/match/detail/MatchDetailHeader";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
 // Enable ISR - revalidate every 60 seconds
 export const revalidate = 60;
@@ -28,7 +29,7 @@ export default async function MatchDetailPage({
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return <ErrorMessage message={error} />;
   }
 
   if (!match) notFound();

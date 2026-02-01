@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import DatePicker from "@/components/fixtures/FixturesDatePicker";
 import LoadingFixturesPage from "./loading";
 import { formatDate } from "@/lib/utils";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
 // Enable cache revalidation
 export const revalidate = 60;
@@ -49,10 +50,10 @@ export default async function FixturesPage({
     error = (e as Error).message;
   }
 
-  if (error) {
-    return <p>{error}</p>;
+ if (error) {
+    return <ErrorMessage message={error} />;
   }
-  
+
   // Format the date for display
   const displayDate = new Date(dateParams.date).toLocaleDateString("en-US", {
     weekday: "long",
