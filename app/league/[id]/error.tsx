@@ -7,9 +7,11 @@ import Link from "next/link";
 export default function LeagueError({
   error,
   reset,
+  digest
 }: {
   error: Error;
   reset: () => void;
+  digest?: string;
 }) {
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
@@ -24,7 +26,7 @@ export default function LeagueError({
 
         {/* Message */}
         <p className="text-sm text-gray-400 max-w-md">
-          {error.message}
+          {digest || "Something went wrong. Please try again later."}
         </p>
 
         {/* Actions */}

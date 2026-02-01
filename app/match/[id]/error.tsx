@@ -7,9 +7,11 @@ import Link from "next/link";
 export default function MatchError({
   error,
   reset,
+  digest,
 }: {
   error: Error;
   reset: () => void;
+  digest?: string;
 }) {
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
@@ -23,7 +25,9 @@ export default function MatchError({
         </h2>
 
         {/* Message */}
-        <p className="text-sm text-gray-400 max-w-md">{error.message}</p>
+        <p className="text-sm text-gray-400 max-w-md">
+          {digest || "Something went wrong. Please try again later."}
+        </p>
 
         {/* Actions */}
         <div className="flex items-center gap-4">
