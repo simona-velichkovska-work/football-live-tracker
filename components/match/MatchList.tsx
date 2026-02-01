@@ -4,7 +4,7 @@ import MatchCard from "./MatchCard";
 import { Match } from "@/lib/types";
 import Image from "next/image";
 import EmptyState from "../ui/EmptyState";
-import Suspense from "react";
+import Link from "next/link";
 
 type MatchListProps = {
   matches: Match[];
@@ -45,6 +45,7 @@ export default function MatchList({
     <div className="space-y-12">
       {Object.values(matchesByLeague).map((leagueMatches) => (
         <section key={leagueMatches[0].league.id}>
+          <Link href={`/league/${leagueMatches[0].league.id}`} className="hover:underline">
           <header className="flex items-center gap-3 mb-6">
             {leagueMatches[0].league.logo && (
               <Image
@@ -56,11 +57,13 @@ export default function MatchList({
                 unoptimized
               />
             )}
-            <h2 className="text-lg font-semibold">
-              {leagueMatches[0].league.name}
-            </h2>
+            
+              <h2 className="text-lg font-semibold">
+                {leagueMatches[0].league.name}
+              </h2>
+            
           </header>
-
+          </Link>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {leagueMatches.map((match) => (
               <MatchCard

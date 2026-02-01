@@ -3,7 +3,14 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ['media.api-sports.io'], // add the domain here
+    remotePatterns: [
+      {
+        protocol: "https", 
+        hostname: "media-2.api-sports.io",
+        port: "",
+        pathname: "/football/**",
+      },
+    ],
   },
 };
 

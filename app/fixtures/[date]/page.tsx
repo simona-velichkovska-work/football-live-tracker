@@ -37,8 +37,7 @@ export default async function FixturesPage({ params }: { params: { date: string 
   let fixtures;
   try {
     fixtures = await getMatchesByDate(dateParams.date);
-    console.log("Fetched fixtures:", fixtures);
-  } catch (error) {
+  } catch (error) { 
     console.error("Error fetching fixtures:", error);
     // Re-throw to trigger error.tsx
     throw new Error('Failed to fetch fixtures');

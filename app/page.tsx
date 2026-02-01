@@ -15,13 +15,8 @@ export default async function HomePage() {
   // Fetch matches for today
   // Add error handling
   let matches;
-  try {
-    matches = await getMatchesByDate(todayMatchDate);
-  } catch (error) {
-    console.error("Error fetching matches:", error);
-    matches = []; // Return empty array instead of null
-  }
-  
+  matches = await getMatchesByDate(todayMatchDate);
+
   return (
   
       <ClientMatchFilter matches={matches} />

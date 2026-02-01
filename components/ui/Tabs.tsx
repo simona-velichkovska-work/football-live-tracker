@@ -20,7 +20,7 @@ export default function Tabs({ tabs, children }: TabsProps) {
   return (
     <div className="w-full">
       {/* TAB LIST */}
-      <div className="grid grid-cols-3 bg-secondary/50 p-1 rounded-xl">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] bg-[#1d222a] p-1 rounded-xl">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
 
@@ -47,9 +47,7 @@ export default function Tabs({ tabs, children }: TabsProps) {
       {/* TAB CONTENT */}
       <div className="mt-4">
         {Array.isArray(children)
-          ? children.find(
-              (child: any) => child.props.tabId === activeTab
-            )
+          ? children.find((child: any) => child.props.tabId === activeTab)
           : children}
       </div>
     </div>

@@ -1,11 +1,15 @@
 import { API_BASE_URL, API_HEADERS } from "./constants";
 
+// Helper to handle API errors
+function apiError(message: string): never {
+  throw new Error(message);
+}
+
 // Get All fixtures/matches for a specific date
 // Refactor: getMatchesByDate => getFixturesByDate ?
 export async function getMatchesByDate(date: string) {
   try {
     // Construct the URL with query parameters
-    console.log("Fetching matches for date:", date);
     const url = new URL(`${API_BASE_URL}/fixtures`);
     url.searchParams.set("date", date);
 
@@ -49,7 +53,6 @@ export async function getLiveMatches() {
     }
     
     const json = await res.json();
-    console.log("Live Matches Response:", json);
     if (json.errors && Object.keys(json.errors).length > 0) {
       return null;
     }
@@ -87,4 +90,67 @@ export async function getMatchById(id: number) {
   } catch {
     return null;
   }
+}
+
+// Get league standings with league + season
+export async function getLeagueStandings(leagueId: number, season: number) {
+  const url = new URL(`${API_BASE_URL}/standings`);
+  url.searchParams.set("league", leagueId.toString());
+  url.searchParams.set("season", season.toString());
+
+  const res = await fetch(url.toString(), {
+    headers: API_HEADERS,
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    apiError(`Failed to fetch standings (${res.status})`);
+  }
+
+  const json = await res.json();
+
+  if (json?.errors && Object.keys(json.errors).length > 0) {
+    const msg = JSON.stringify(json.errors).toLowerCase();
+
+    if (msg.includes("limit") || msg.includes("request")) {
+      apiError("Rate limit exceeded. Try again later.");
+    }
+
+    apiError("API error: " + JSON.stringify(json.errors));
+  }
+
+  const league = json.response?.[0]?.league ?? null;
+  const standings = league?.standings?.[0] ?? [];
+
+  return { league, standings };
+}
+
+// Get upcoming fixtures for a league with optional `next` count
+export async function getLeagueFixtures(leagueId: number, season: number) {
+  const url = new URL(`${API_BASE_URL}/fixtures`);
+  url.searchParams.set("league", leagueId.toString());
+  url.searchParams.set("season", season.toString());
+
+  const res = await fetch(url.toString(), {
+    headers: API_HEADERS,
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    apiError(`Failed to fetch fixtures (${res.status})`);
+  }
+
+  const json = await res.json();
+
+  if (json?.errors && Object.keys(json.errors).length > 0) {
+    const msg = JSON.stringify(json.errors).toLowerCase();
+
+    if (msg.includes("limit") || msg.includes("request")) {
+      apiError("Rate limit exceeded. Try again later.");
+    }
+
+    apiError("API error: " + JSON.stringify(json.errors));
+  }
+
+  return json.response ?? [];
 }
