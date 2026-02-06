@@ -1,5 +1,5 @@
 
-# ⚽ Football Live Tracker -> Deployed at [https://football-tracker-hazel.vercel.app/]
+# ⚽ Football Live Tracker
 
 A Next.js application for viewing today’s football fixtures, live scores, and match details using the API-Football service.
 
